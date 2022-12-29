@@ -38,4 +38,18 @@ class IOLogger extends AbstractLogger
     {
         $this->io = $io;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function log($level, \Stringable|string $message, array $context = [])
+    {
+        $verbosity = self::VERBOSITY_LEVEL_MAP[$level];
+
+        if (in_array($level, self::ERROR_LEVELS)) {
+            $this->io->writeError($message, true, $verbosity);
+        } else {
+            $this->io->write($message, true, $verbosity);
+        }
+    }
 }
